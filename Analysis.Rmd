@@ -12,6 +12,27 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyverse)
 d = read_csv('Cleaned for Queer Analysis.csv')
+
+for (i in 43:47){
+d[,i] <- ifelse(d[,i] == "Extremely comfortable", 5, ifelse(d[,i] == "Somewhat comfortable", 4,ifelse(d[,i] == "Neither comfortable nor uncomfortable", 3,ifelse(d[,i] == "Somewhat uncomfortable", 2,ifelse(d[,i] == "Extremely uncomfortable", 1,NA)))))
+d[,i] = as.numeric(as.character(d[[i]]))
+}
+
+
+d = mutate(d,role = ifelse(grepl("1st",Academic_Class, fixed=TRUE),"Undergraduate",
+                           ifelse(grepl("2nd",Academic_Class, fixed=TRUE),"Undergraduate",
+                                  ifelse(grepl("3rd",Academic_Class, fixed=TRUE),"Undergraduate",
+                                         ifelse(grepl("4th",Academic_Class, fixed=TRUE),
+                                                "Undergraduate",
+                                                ifelse(grepl("5th+",Academic_Class, fixed=TRUE),
+                                                       "Undergraduate",
+                                                       ifelse(grepl("Master",Academic_Class,
+                                                                    fixed=TRUE),"Graduate",
+                                                              ifelse(grepl("PhD",Academic_Class,
+                                                                           fixed=TRUE),"Graduate",
+                                                                        ifelse(grepl("Staff",Position),"Staff",                                                       ifelse(grepl("Faculty",Position),"Faculty","NA"))))))))))
+
+dQueer = filter(d,d$LGBTQ=="Yes"|d$LGBTQ=="It's complicated, I'd like to expand further")
 ```
 
 ## Including Plots
