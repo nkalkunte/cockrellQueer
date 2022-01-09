@@ -33,6 +33,8 @@ d = mutate(d,role = ifelse(grepl("1st",Academic_Class, fixed=TRUE),"Undergraduat
                                                                         ifelse(grepl("Staff",Position),"Staff",                                                       ifelse(grepl("Faculty",Position),"Faculty","NA"))))))))))
 
 dQueer = filter(d,d$LGBTQ=="Yes"|d$LGBTQ=="It's complicated, I'd like to expand further")
+
+questionKey = tibble(col = colnames(d)[3:21], questions = unlist(d_raw[1,13:31]))
 ```
 
 ## Including Plots
