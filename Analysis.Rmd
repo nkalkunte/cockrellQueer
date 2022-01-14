@@ -74,6 +74,45 @@ Statistics on queer only responses:
 
 ```
 
+T-Test Example
+```{r}
+d = mutate(d,queer=ifelse(grepl("Yes", LGBTQ, fixed = TRUE), "Queer",
+                                               ifelse(grepl("No", LGBTQ, fixed =TRUE), "Straight","Queer")))
+
+a = d%>%
+    group_by(queer) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[,c(1,4:22)]
+
+  
+q = questionKey$col[c(1:19)]
+p.vals = numeric(length(q))
+for (i in q){
+t = t.test(data = d, d[[i]]~queer)
+p = t$p.value
+p.vals[i] = p
+}
+a = as_tibble(p.vals)
+```
+
+Anova With Post-Hoc
+```{r}
+q = questionKey$col[c(1:17,19)]
+p.vals = numeric(length(q))
+post.hoc = list(length(q))
+for (i in q){
+r.aov = aov(data = d, d[[i]]~role)
+p = summary(r.aov)[[1]][["Pr(>F)"]][1]
+p.vals[i] = p
+if (p<.05){
+ post.hoc[[i]] = pairwise.t.test(d[[i]], d$role, p.adj = "bonferroni")
+}
+}
+a = as_tibble(p.vals)
+
+```
+
+
 
 
 ## Including Plots
