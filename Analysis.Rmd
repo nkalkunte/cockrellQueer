@@ -35,6 +35,7 @@ d = mutate(d,role = ifelse(grepl("1st",Academic_Class, fixed=TRUE),"Undergraduat
 
 dQueer = filter(d,d$LGBTQ=="Yes"|d$LGBTQ=="It's complicated, I'd like to expand further")
 dStraight = filter(d,d$LGBTQ =="No"|is.na(d$LGBTQ))
+#Note: Straight includes all gender responses. All "Its complicated" responses are either cis, nonsense, or no answers
 
 #read in the key from the box file
 questionKey = read_csv('Question Key.csv')
