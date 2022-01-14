@@ -5,12 +5,13 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
 
 
 
 ```{r}
-library(tidyverse)
+
 d = read_csv('Cleaned for Queer Analysis.csv')
 
 for (i in 43:47){
@@ -33,20 +34,59 @@ d = mutate(d,role = ifelse(grepl("1st",Academic_Class, fixed=TRUE),"Undergraduat
                                                                         ifelse(grepl("Staff",Position),"Staff",                                                       ifelse(grepl("Faculty",Position),"Faculty","NA"))))))))))
 
 dQueer = filter(d,d$LGBTQ=="Yes"|d$LGBTQ=="It's complicated, I'd like to expand further")
+dStraight = filter(d,d$LGBTQ =="No"|is.na(d$LGBTQ))
 
-questionKey = tibble(col = colnames(d)[3:21], questions = unlist(d_raw[1,13:31]))
+#read in the key from the box file
+questionKey = read_csv('Question Key.csv')
 ```
+
+
+Manually filtered the data using excel and added categories for identity
+
+```{r}
+#Filtering Data
+dQueer = read.csv('Queer Data For Cleanup.csv')
+dQueer <- dQueer[!(dQueer$Filter.),]
+
+dQueer = mutate(dQueer, genderIdentity =ifelse(grepl("Cisgender", Gender, fixed = TRUE), "Cisgender",
+                                               ifelse(grepl("Nonbinary", Gender, fixed = TRUE), "Trans/NB",
+                                                      ifelse(grepl("Transgender", Gender, fixed = TRUE), "Trans/NB",
+                                                             ifelse(grepl("Response", Gender, fixed = TRUE), "Trans/NB","N/A")                                                             ))))
+
+
+```
+
+Statistics on Queer Student Responses vs others. 
+
+```{r}
+
+
+
+
+```
+
+Statistics on queer only responses:
+```{r}
+
+
+
+
+```
+
+
 
 ## Including Plots
 
-You can also embed plots, for example:
+##You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+##Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
 
 ```{r}
+#Writing to excel file to clean
+library("xlsx")
+
+write.xlsx(dQueer,file = 'Queer Data For .xlsx',sheetName = 'sheet1',col.names = TRUE, row.names = TRUE)
+
+
 
 ```
