@@ -6,19 +6,24 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(data.table)
 ```
 
 
 
 ```{r}
 
-d = read_csv('Cleaned for Queer Analysis.csv')
+d = read_csv('Queer Data fully Cleaned.csv')
 
 for (i in 43:47){
 d[,i] <- ifelse(d[,i] == "Extremely comfortable", 5, ifelse(d[,i] == "Somewhat comfortable", 4,ifelse(d[,i] == "Neither comfortable nor uncomfortable", 3,ifelse(d[,i] == "Somewhat uncomfortable", 2,ifelse(d[,i] == "Extremely uncomfortable", 1,NA)))))
 d[,i] = as.numeric(as.character(d[[i]]))
 }
 
+for(i in 3:21){
+  d[,i] = as.numeric(d[[i]])
+  
+}
 
 d = mutate(d,role = ifelse(grepl("1st",Academic_Class, fixed=TRUE),"Undergraduate",
                            ifelse(grepl("2nd",Academic_Class, fixed=TRUE),"Undergraduate",
@@ -33,8 +38,7 @@ d = mutate(d,role = ifelse(grepl("1st",Academic_Class, fixed=TRUE),"Undergraduat
                                                                            fixed=TRUE),"Graduate",
                                                                         ifelse(grepl("Staff",Position),"Staff",                                                       ifelse(grepl("Faculty",Position),"Faculty","NA"))))))))))
 
-dQueer = filter(d,d$LGBTQ=="Yes"|d$LGBTQ=="It's complicated, I'd like to expand further")
-dStraight = filter(d,d$LGBTQ =="No"|is.na(d$LGBTQ))
+
 #Note: Straight includes all gender responses. All "Its complicated" responses are either cis, nonsense, or no answers
 
 #read in the key from the box file
@@ -74,26 +78,72 @@ Statistics on queer only responses:
 
 ```
 
-T-Test Example
+All Queer vs Straight Climate T Test 
 ```{r}
-d = mutate(d,queer=ifelse(grepl("Yes", LGBTQ, fixed = TRUE), "Queer",
-                                               ifelse(grepl("No", LGBTQ, fixed =TRUE), "Straight","Queer")))
+
 
 a = d%>%
-    group_by(queer) %>% 
+    group_by(Orientation) %>% 
     summarise_all(mean,na.rm=TRUE)
   b = a[,c(1,4:22)]
 
   
 q = questionKey$col[c(1:19)]
-p.vals = numeric(length(q))
+p.vals = numeric()
 for (i in q){
-t = t.test(data = d, d[[i]]~queer)
+t = t.test( d[[i]]~d$Orientation)
 p = t$p.value
-p.vals[i] = p
+p.vals[[i]] = p
+
+
 }
-a = as_tibble(p.vals)
+levels(d)
+
+queerp.vals= tibble(Question = questionKey$Question[c(1:19)],Values = p.vals)
+AllQueerSig = filter(queerp.vals, Values < 0.05)
+
 ```
+Queer Undergrad Students T Test
+```{r}
+
+f <- d %>%
+  filter(role == "Undergraduate")%>%
+  droplevels
+f$Orientation <- factor(f$Orientation)
+levels(f$Orientation)
+
+a = f%>%
+    group_by(Orientation) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[,c(1,4:22)]
+
+  
+q = questionKey$col[c(1:19)]
+p.vals = numeric()
+for (i in q){
+t = t.test( f[[i]]~f$Orientation)
+p = t$p.value
+p.vals[[i]] = p
+
+}
+queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
+ugQueerSig = filter(queerp.vals, Value < 0.05)
+
+print(p.vals)
+
+
+
+```
+```{r}
+
+g = mutate(f, test = ifelse(grepl("Straight", Orientation, fixed = TRUE ), factor("Straight"), factor("Gay")))
+
+ f$Orientation <- factor(f$Orientation)
+```
+
+
+
+
 
 Anova With Post-Hoc
 ```{r}
