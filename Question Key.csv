@@ -1,37 +1,37 @@
-﻿col,questions
-Q2_1,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 1. The resources I need to do my work effectively are readily available.
-Q2_2,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 2. My growth and development has been supported through opportunities within the Cockrell School of Engineering.
-Q2_3,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 3. I receive recognition and praise for my good work similar to my peers.
-Q2_4,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 4. There is someone in the Cockrell School of Engineering who encourages my professional development.
-Q2_5,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 5. I feel like I belong at the Cockrell School of Engineering.
-Q2_6,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 6. I feel respected and valued by faculty in the Cockrell School of Engineering.
-Q3_1,Please indicate your level of agreement with the following statements: - 7. I feel respected and valued by staff in the Cockrell School of Engineering.
-Q3_2,Please indicate your level of agreement with the following statements: - 8. I feel respected and valued by students in the Cockrell School of Engineering.
-Q3_3,"Please indicate your level of agreement with the following statements: - 9. When I speak up in my daily interactions within the Cockrell School of Engineering community, my opinion is valued."
-Q3_4,Please indicate your level of agreement with the following statements: - 10. I feel that my work or studies contribute to the excellence of the Cockrell School of Engineering.
-Q3_5,Please indicate your level of agreement with the following statements: - 11. I trust the Cockrell School of Engineering administration to be fair to all employees and students.
-Q3_6,"Please indicate your level of agreement with the following statements: - 12. At the Cockrell School of Engineering, I have opportunities to work or learn successfully in settings with diverse individuals."
-Q4_1,Please indicate your level of agreement with the following statements: - 13. The culture of the Cockrell School of Engineering is accepting of people with different ideas.
-Q4_2,Please indicate your level of agreement with the following statements: - 14. The culture of the Cockrell School of Engineering is accepting of people from all backgrounds.
-Q4_3,Please indicate your level of agreement with the following statements: - 15. I believe diversity is imperative to the success of the Cockrell School of Engineering.
-Q4_4,Please indicate your level of agreement with the following statements: - 16. I see people who look like me in positions I aspire to hold within the Cockrell School of Engineering.
-Q4_5,Please indicate your level of agreement with the following statements: - 17. I feel respected and valued by my primary supervisor at the Cockrell School of Engineering.
-Q4_6,Please indicate your level of agreement with the following statements: - 17. I feel respected and valued by my department chair/center director at the Cockrell School of Engineering.
-Q4_7,Please indicate your level of agreement with the following statements: - 18. There is someone in the Cockrell School of Engineering who encourages my academic success.
-Q18_1,How comfortable are you being open about your sexual orientation/sexuality with each of the following groups? - Engineering undergraduates
-Q18_2,How comfortable are you being open about your sexual orientation/sexuality with each of the following groups? - Engineering graduate students
-Q18_3,How comfortable are you being open about your sexual orientation/sexuality with each of the following groups? - Engineering faculty
-Q18_4,How comfortable are you being open about your sexual orientation/sexuality with each of the following groups? - Staff within the Cockrell School of Engineering
-Q18_5,How comfortable are you being open about your sexual orientation/sexuality with each of the following groups? - Your family
-Q19_1,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Acquired/Traumatic Brain Injury
-Q19_4,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Attention Deficit/Hyperactivity Disorder
-Q19_5,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Asperger's/Autism Spectrum
-Q19_6,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Blind/Low Vision
-Q19_7,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Deaf/Hard of Hearing
-Q19_8,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Cognitive or Learning Disability
-Q19_9,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Chronic Illness/Medical Condition
-Q19_10,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Mental Health/Psychological Condition
-Q19_11,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Physical/Mobility condition that affects walking
-Q19_12,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Physical/Mobility condition that does not affect walking
-Q19_13,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Speech/Communication Condition
-Q19_14,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Other (please specify):
+col,FullQuestion,Question
+Q2_1,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 1. The resources I need to do my work effectively are readily available.,The resources I need to do my work effectively are readily available.
+Q2_2,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 2. My growth and development has been supported through opportunities within the Cockrell School of Engineering.,My growth and development has been supported through opportunities within the Cockrell School of Engineering.
+Q2_3,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 3. I receive recognition and praise for my good work similar to my peers.,I receive recognition and praise for my good work similar to my peers.
+Q2_4,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 4. There is someone in the Cockrell School of Engineering who encourages my professional development.,There is someone in the Cockrell School of Engineering who encourages my professional development.
+Q2_5,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 5. I feel like I belong at the Cockrell School of Engineering.,I feel like I belong at the Cockrell School of Engineering.
+Q2_6,Please indicate your level of agreement with the following statements. Base your responses on your experiences within the Cockrell School of Engineering at UT Austin. - 6. I feel respected and valued by faculty in the Cockrell School of Engineering.,I feel respected and valued by faculty in the Cockrell School of Engineering.
+Q3_1,Please indicate your level of agreement with the following statements: - 7. I feel respected and valued by staff in the Cockrell School of Engineering.,I feel respected and valued by staff in the Cockrell School of Engineering.
+Q3_2,Please indicate your level of agreement with the following statements: - 8. I feel respected and valued by students in the Cockrell School of Engineering.,I feel respected and valued by students in the Cockrell School of Engineering.
+Q3_3,"Please indicate your level of agreement with the following statements: - 9. When I speak up in my daily interactions within the Cockrell School of Engineering community, my opinion is valued.","When I speak up in my daily interactions within the Cockrell School of Engineering community, my opinion is valued."
+Q3_4,Please indicate your level of agreement with the following statements: - 10. I feel that my work or studies contribute to the excellence of the Cockrell School of Engineering.,I feel that my work or studies contribute to the excellence of the Cockrell School of Engineering.
+Q3_5,Please indicate your level of agreement with the following statements: - 11. I trust the Cockrell School of Engineering administration to be fair to all employees and students.,I trust the Cockrell School of Engineering administration to be fair to all employees and students.
+Q3_6,"Please indicate your level of agreement with the following statements: - 12. At the Cockrell School of Engineering, I have opportunities to work or learn successfully in settings with diverse individuals.","At the Cockrell School of Engineering, I have opportunities to work or learn successfully in settings with diverse individuals."
+Q4_1,Please indicate your level of agreement with the following statements: - 13. The culture of the Cockrell School of Engineering is accepting of people with different ideas.,The culture of the Cockrell School of Engineering is accepting of people with different ideas.
+Q4_2,Please indicate your level of agreement with the following statements: - 14. The culture of the Cockrell School of Engineering is accepting of people from all backgrounds.,The culture of the Cockrell School of Engineering is accepting of people from all backgrounds.
+Q4_3,Please indicate your level of agreement with the following statements: - 15. I believe diversity is imperative to the success of the Cockrell School of Engineering., I believe diversity is imperative to the success of the Cockrell School of Engineering.
+Q4_4,Please indicate your level of agreement with the following statements: - 16. I see people who look like me in positions I aspire to hold within the Cockrell School of Engineering., I see people who look like me in positions I aspire to hold within the Cockrell School of Engineering.
+Q4_5,Please indicate your level of agreement with the following statements: - 17. I feel respected and valued by my primary supervisor at the Cockrell School of Engineering., I feel respected and valued by my primary supervisor at the Cockrell School of Engineering.
+Q4_6,Please indicate your level of agreement with the following statements: - 17. I feel respected and valued by my department chair/center director at the Cockrell School of Engineering., I feel respected and valued by my department chair/center director at the Cockrell School of Engineering.
+Q4_7,Please indicate your level of agreement with the following statements: - 18. There is someone in the Cockrell School of Engineering who encourages my academic success.,There is someone in the Cockrell School of Engineering who encourages my academic success.
+Q18_1,How comfortable are you being open about your sexual orientation/sexuality with each of the following groups? - Engineering undergraduates,Comfort Level with Engineering Undergraduates
+Q18_2,How comfortable are you being open about your sexual orientation/sexuality with each of the following groups? - Engineering graduate students,Comfort level with engineering graduate students
+Q18_3,How comfortable are you being open about your sexual orientation/sexuality with each of the following groups? - Engineering faculty,Comfort level with engineering faculty
+Q18_4,How comfortable are you being open about your sexual orientation/sexuality with each of the following groups? - Staff within the Cockrell School of Engineering,Comfort level with CSoE Staff
+Q18_5,How comfortable are you being open about your sexual orientation/sexuality with each of the following groups? - Your family,Comfort level with your family
+Q19_1,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Acquired/Traumatic Brain Injury,Acquired/Traumatic Brain Injury
+Q19_4,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Attention Deficit/Hyperactivity Disorder,Attention Deficit/Hyperactivity Disorder
+Q19_5,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Asperger's/Autism Spectrum,Asperger's/Autism Spectrum
+Q19_6,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Blind/Low Vision,Blind/Low Vision
+Q19_7,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Deaf/Hard of Hearing,Deaf/Hard of Hearing
+Q19_8,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Cognitive or Learning Disability,Cognitive or Learning Disability
+Q19_9,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Chronic Illness/Medical Condition,Chronic Illness/Medical Condition
+Q19_10,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Mental Health/Psychological Condition,Mental Health/Psychological Condition
+Q19_11,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Physical/Mobility condition that affects walking,Physical/Mobility condition that affects walking
+Q19_12,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Physical/Mobility condition that does not affect walking,Physical/Mobility condition that does not affect walking
+Q19_13,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Speech/Communication Condition,Speech/Communication Condition
+Q19_14,What type(s) of disabilities do you have? (Check all that apply.) - Selected Choice - Other (please specify):,Other (please specify):
