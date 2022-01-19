@@ -7,6 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(data.table)
+    options(warn=-1)
 ```
 
 
@@ -50,10 +51,9 @@ Manually filtered the data using excel and added categories for identity
 
 ```{r}
 #Filtering Data
-dQueer = read.csv('Queer Data For Cleanup.csv')
-dQueer <- dQueer[!(dQueer$Filter.),]
 
-dQueer = mutate(dQueer, genderIdentity =ifelse(grepl("Cisgender", Gender, fixed = TRUE), "Cisgender",
+
+d = mutate(d, genderIdentity =ifelse(grepl("Cisgender", Gender, fixed = TRUE), "Cisgender",
                                                ifelse(grepl("Nonbinary", Gender, fixed = TRUE), "Trans/NB",
                                                       ifelse(grepl("Transgender", Gender, fixed = TRUE), "Trans/NB",
                                                              ifelse(grepl("Response", Gender, fixed = TRUE), "Trans/NB","N/A")                                                             ))))
@@ -81,6 +81,7 @@ Statistics on queer only responses:
 All Queer vs Straight Climate T Test 
 ```{r}
 
+options(warn=-1)
 
 a = d%>%
     group_by(Orientation) %>% 
@@ -97,43 +98,48 @@ p.vals[[i]] = p
 
 
 }
-levels(d)
-
-queerp.vals= tibble(Question = questionKey$Question[c(1:19)],Values = p.vals)
-AllQueerSig = filter(queerp.vals, Values < 0.05)
-
+queerps = tibble(Question = questionKey$Question[c(1:19)],Values = p.vals)
+queerSig =queerps%>%
+  mutate(AllQueer = ifelse(Values < 0.05, Values, "NS")) %>%
+  mutate(Values = NULL)
 ```
 Queer Undergrad Students T Test
 ```{r}
-
+    options(warn=-1)
 f <- d %>%
-  filter(role == "Undergraduate")%>%
-  droplevels
-f$Orientation <- factor(f$Orientation)
-levels(f$Orientation)
+  filter(role == "Undergraduate")
 
 a = f%>%
     group_by(Orientation) %>% 
     summarise_all(mean,na.rm=TRUE)
-  b = a[,c(1,4:22)]
+  b = a[c(1,4:22)]
 
   
 q = questionKey$col[c(1:19)]
 p.vals = numeric()
+
 for (i in q){
-t = t.test( f[[i]]~f$Orientation)
-p = t$p.value
-p.vals[[i]] = p
+  if(i == "Q4_6"){
+    p.vals[[i]] = NA
+    next}
+  t = t.test( f[[i]]~f$Orientation)
+  p = t$p.value
+  p.vals[[i]] = p
 
 }
 queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
-ugQueerSig = filter(queerp.vals, Value < 0.05)
 
-print(p.vals)
 
 
 
 ```
+
+
+
+
+
+
+
 ```{r}
 
 g = mutate(f, test = ifelse(grepl("Straight", Orientation, fixed = TRUE ), factor("Straight"), factor("Gay")))
