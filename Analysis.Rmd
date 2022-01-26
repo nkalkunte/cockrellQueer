@@ -61,10 +61,10 @@ d = mutate(d, genderIdentity =ifelse(grepl("Cisgender", Gender, fixed = TRUE), "
 
 ```
 
-Statistics on Queer Student Responses vs others. 
+Queer Responses Count
 
 ```{r}
-
+table(d$role, d$Orientation == "LGBT")
 
 
 
@@ -104,6 +104,7 @@ queerSig =queerps%>%
   mutate(Values = NULL)
 ```
 Queer Undergrad Students T Test
+
 ```{r}
     options(warn=-1)
 f <- d %>%
@@ -128,16 +129,83 @@ for (i in q){
 
 }
 queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
-
+queerp.vals = mutate(queerp.vals, sigval = ifelse(Value < 0.05, Value, "NS") )
+queerSig$UGStudents <- queerp.vals$sigval
 
 
 
 ```
 
 
+Grad Students Only
+```{r}
+ options(warn=-1)
+f <- d %>%
+  filter(role == "Graduate")
+
+a = f%>%
+    group_by(Orientation) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[c(1,4:22)]
+
+  
+q = questionKey$col[c(1:19)]
+p.vals = numeric()
+
+for (i in q){
+  if(i == "Q4_6"){
+    p.vals[[i]] = NA
+    next}
+  t = t.test( f[[i]]~f$Orientation)
+  p = t$p.value
+  p.vals[[i]] = p
+
+}
+queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
+queerp.vals = mutate(queerp.vals, sigval = ifelse(Value < 0.05, Value, "NS") )
+queerSig$GradStudents <- queerp.vals$sigval
+
+```
+
+
+All Students
+```{r}
+ options(warn=-1)
+f <- d %>%
+  filter(role == "Graduate" || role == "Undergraduate")
+
+a = f%>%
+    group_by(Orientation) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[c(1,4:22)]
+
+  
+q = questionKey$col[c(1:19)]
+p.vals = numeric()
+
+for (i in q){
+  if(i == "Q4_6"){
+    p.vals[[i]] = NA
+    next}
+  t = t.test( f[[i]]~f$Orientation)
+  p = t$p.value
+  p.vals[[i]] = p
+
+}
+queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
+queerp.vals = mutate(queerp.vals, sigval = ifelse(Value < 0.05, Value, "NS") )
+queerSig$AllStudents <- queerp.vals$sigval
+```
+
+```{r}
 
 
 
+
+
+
+
+```
 
 
 ```{r}
