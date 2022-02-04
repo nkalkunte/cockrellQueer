@@ -13,11 +13,11 @@ library(data.table)
 
 
 ```{r}
-
+options(warn = -1)
 d = read_csv('Queer Data fully Cleaned.csv')
 
 for (i in 43:47){
-d[,i] <- ifelse(d[,i] == "Extremely comfortable", 5, ifelse(d[,i] == "Somewhat comfortable", 4,ifelse(d[,i] == "Neither comfortable nor uncomfortable", 3,ifelse(d[,i] == "Somewhat uncomfortable", 2,ifelse(d[,i] == "Extremely uncomfortable", 1,NA)))))
+
 d[,i] = as.numeric(as.character(d[[i]]))
 }
 
@@ -47,23 +47,26 @@ questionKey = read_csv('Question Key.csv')
 ```
 
 
-Manually filtered the data using excel and added categories for identity
+Reading in the data, classifying gender identity
 
 ```{r}
 #Filtering Data
 
 
-d = mutate(d, genderIdentity =ifelse(grepl("Cisgender", Gender, fixed = TRUE), "Cisgender",
+d <- mutate(d, genderIdentity = ifelse(grepl("Cisgender", Gender, fixed = TRUE), "Cisgender",
                                                ifelse(grepl("Nonbinary", Gender, fixed = TRUE), "Trans/NB",
                                                       ifelse(grepl("Transgender", Gender, fixed = TRUE), "Trans/NB",
-                                                             ifelse(grepl("Response", Gender, fixed = TRUE), "Trans/NB","N/A")                                                             ))))
+                                                             ifelse(grepl("Response", Gender, fixed = TRUE), ifelse(grepl("Yes", d$LGBTQ, fixed = TRUE), "Trans/NB","Cisgender"),"Cisgender")))))
+  
+  
+table(d$genderIdentity, d$role)
 
 
 ```
 
-Statistics on Queer Student Responses vs others. 
-
+Data tabulated
 ```{r}
+table(d$Orientation, d$role)
 
 
 
@@ -104,12 +107,13 @@ queerSig =queerps%>%
   mutate(Values = NULL)
 ```
 
-All Queer Students T Test
 
+
+All Queer Students T Test
 ```{r}
   options(warn=-1)
 f <- d %>%
-  filter(role == "Undergraduate" || role == "Graduate")
+  filter(role == "Undergraduate" | role == "Graduate")
 
 a = f%>%
     group_by(Orientation) %>% 
@@ -168,12 +172,225 @@ queerSig$UGStudents  <- queerp.vals$Sig
 
 ```
 
+
 Queer Grad Students Sig
 ```{r}
+
+    options(warn=-1)
+f <- d %>%
+  filter(role == "Graduate")
+
+a = f%>%
+    group_by(Orientation) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[c(1,4:22)]
+
+  
+q = questionKey$col[c(1:19)]
+p.vals = numeric()
+
+for (i in q){
+  if(i == "Q4_6"){
+    p.vals[[i]] = NA
+    next}
+  t = t.test( f[[i]]~f$Orientation)
+  p = t$p.value
+  p.vals[[i]] = p
+
+}
+queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
+queerp.vals = mutate(queerp.vals, Sig = ifelse(Value < 0.05, Value, "NS"))
+
+queerSig$GradStudents  <- queerp.vals$Sig
+
+
+```
+
+```{r}
+    options(warn=-1)
+f <- d %>%
+  filter(role == "Faculty" | role == "Staff")
+
+a = f%>%
+    group_by(Orientation) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[c(1,4:22)]
+
+  
+q = questionKey$col[c(1:19)]
+p.vals = numeric()
+
+for (i in q){
+  if(i == "Q4_7"){
+    p.vals[[i]] = NA
+    next}
+  t = t.test( f[[i]]~f$Orientation)
+  p = t$p.value
+  p.vals[[i]] = p
+
+}
+queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
+queerp.vals = mutate(queerp.vals, Sig = ifelse(Value < 0.05, Value, "NS"))
+
+queerSig$Disabled  <- queerp.vals$Sig
+
+```
+
+```{r}
+options(warn=-1)
+
+a = d%>%
+    group_by(genderIdentity) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[,c(1,4:22)]
+
+d %>% group_by(genderIdentity)
+
+q = questionKey$col[c(1:19)]
+p.vals = numeric()
+for (i in q){
+  if(i == "Q4_6"){
+     p.vals[[i]] = NA
+     next
+  }
+t = t.test( d[[i]]~d$genderIdentity)
+print(t$p.value)
+p = t$p.value
+p.vals[[i]] = p
+
+
+}
+queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
+queerp.vals = mutate(queerp.vals, Sig = ifelse(Value < 0.05, Value, "NS"))
+
+queerSig$TransNBAll  <- queerp.vals$Sig
+```
+
+T test, disabled queers
+```{r}
+options(warn=-1)
+   
+f <- d %>%
+  filter(Orientation == "LGBT")
+
+a = f%>%
+    group_by(Disability) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[,c(1,43:47)]
+
+table(d$Disability, d$Orientation)
+  
+q = questionKey$col[c(20:24)]
+p.vals = numeric()
+
+for (i in q){
+ 
+  t = t.test( f[[i]]~f$Disability)
+  p = t$p.value
+  p.vals[[i]] = p
+
+}
+queersonly= tibble(Question = questionKey$Question[c(20:24)], Value = p.vals)
+queersonly = mutate(queersonly, Sig = ifelse(Value < 0.05, Value, "NS"))
+queersonlysig = tibble(Question =queersonly$Question, Disabled = queersonly$Sig)
+
+```
+```{r}
+options(warn=-1)
+   
+f <- d %>%
+  filter(Orientation == "LGBT")
+
+a = f%>%
+    group_by(UnderRep) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[,c(1,43:47)]
+
+table(d$UnderRep, d$Orientation)
+  
+q = questionKey$col[c(20:24)]
+p.vals = numeric()
+
+for (i in q){
+ 
+  t = t.test( f[[i]]~f$UnderRep)
+  p = t$p.value
+  p.vals[[i]] = p
+}
+queersonly= tibble(Question = questionKey$Question[c(20:24)], Value = p.vals)
+queersonly = mutate(queersonly, Sig = ifelse(Value < 0.05, Value, "NS"))
+
+queersonlysig$URM <- queersonly$Sig
+
+
+```
+Black Queers T test
+
+```{r}
+options(warn=-1)
+   
+f <- d %>%
+  filter(Orientation == "LGBT")
+
+a = f%>%
+    group_by(UnderRep) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[,c(1,43:47)]
+
+table(d$Black, d$Orientation)
+  
+q = questionKey$col[c(20:24)]
+p.vals = numeric()
+
+for (i in q){
+ 
+  t = t.test( f[[i]]~f$Black)
+  p = t$p.value
+  p.vals[[i]] = p
+}
+queersonly= tibble(Question = questionKey$Question[c(20:24)], Value = p.vals)
+queersonly = mutate(queersonly, Sig = ifelse(Value < 0.05, Value, "NS"))
+
+queersonlysig$Black <- queersonly$Sig
+
 
 
 
 ```
+Asian Queers T test
+
+```{r}
+options(warn=-1)
+   
+f <- d %>%
+  filter(Orientation == "LGBT")
+
+a = f%>%
+    group_by(UnderRep) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = a[,c(1,43:47)]
+
+table(d$Asian, d$Orientation)
+  
+q = questionKey$col[c(20:24)]
+p.vals = numeric()
+
+for (i in q){
+ 
+  t = t.test( f[[i]]~f$Asian)
+  p = t$p.value
+  p.vals[[i]] = p
+}
+queersonly= tibble(Question = questionKey$Question[c(20:24)], Value = p.vals)
+queersonly = mutate(queersonly, Sig = ifelse(Value < 0.05, Value, "NS"))
+
+queersonlysig$Asian <- queersonly$Sig
+
+
+
+
+```
+
 
 
 
@@ -184,17 +401,41 @@ g = mutate(f, test = ifelse(grepl("Straight", Orientation, fixed = TRUE ), facto
  f$Orientation <- factor(f$Orientation)
 ```
 
-
-
-
-
-Anova With Post-Hoc
 ```{r}
+f <- d %>%
+  filter(role == "Staff" | role =="Faculty")
+
+```
+
+Table of queer identities 
+```{r}
+options(warn = -1)
+f <- d %>%
+  filter(Orientation == "LGBT")
+
+c = f%>%
+    group_by(Identity) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = c[,c(1,44:48)]
+  
+table(f$Identity)  
+
+
+```
+
+
+Anova With Post-Hoc all queers
+```{r}
+
+f <- d %>%
+  filter(Orientation == "LGBT")
+
+
 q = questionKey$col[c(1:17,19)]
-p.vals = numeric(length(q))
+p.vals = numeric()
 post.hoc = list(length(q))
 for (i in q){
-r.aov = aov(data = d, d[[i]]~role)
+r.aov = aov(data = f, f[[i]]~Identity)
 p = summary(r.aov)[[1]][["Pr(>F)"]][1]
 p.vals[i] = p
 if (p<.05){
@@ -204,6 +445,38 @@ if (p<.05){
 a = as_tibble(p.vals)
 
 ```
+
+
+ANOVA with Queer Specific Questions
+```{r}
+options(warn = -1)
+f <- d %>%
+  filter(Orientation == "LGBT")
+
+c = f%>%
+    group_by(Identity) %>% 
+    summarise_all(mean,na.rm=TRUE)
+  b = c[,c(1,44:48)]
+
+
+q = questionKey$col[c(20:24)]
+p.vals = numeric()
+post.hoc = list(length(q))
+for (i in q){
+r.aov = aov(data = f, f[[i]]~Identity)
+p = summary(r.aov)[[1]][["Pr(>F)"]][1]
+p.vals[i] = p
+if (p<.05){
+ post.hoc[[i]] = pairwise.t.test(d[[i]], d$role, p.adj = "bonferroni")
+}
+}
+a = as_tibble(p.vals)
+
+
+```
+
+
+Anova Queers by Race
 
 
 
