@@ -7,6 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(data.table)
+library(janitor)
     options(warn=-1)
 ```
 
@@ -90,8 +91,18 @@ options(warn=-1)
 
 a = d%>%
     group_by(Orientation) %>% 
-    summarise_all(mean,na.rm=TRUE)
-  b = a[,c(1,4:22)]
+    summarise_all(mean, na.rm=TRUE)
+  b = a[c(1,4:22)]
+  b <- b %>%transpose() %>%
+      row_to_names(row_number(2))
+  
+r = d%>%
+    group_by(Orientation) %>%
+    summarise_all(sd,na.rm=TRUE)
+  s = r[,c(1,4:22)]
+
+    s <- s %>%transpose() %>%
+      row_to_names(row_number(2))
 
   
 q = questionKey$col[c(1:19)]
@@ -103,10 +114,10 @@ p.vals[[i]] = p
 
 
 }
-queerps = tibble(Question = questionKey$Question[c(1:19)],Values = p.vals)
-queerSig =queerps%>%
-  mutate(AllQueer = ifelse(Values < 0.05, Values, "NS")) %>%
-  mutate(Values = NULL)
+StatSum= tibble(Question = questionKey$Question[c(1:19)],LGBTQAvg = b$LGBT, StraightAvg = b$Straight, LGBTQSTD = s$LGBT, StraightStd = s$Straight,Value = p.vals)
+StatSum = mutate(StatSum, Sig = ifelse(Value < 0.05, Value, "NS"))
+
+queerSig$All  <- StatSum$Sig
 ```
 
 
@@ -114,15 +125,23 @@ queerSig =queerps%>%
 All Queer Students T Test
 ```{r}
   options(warn=-1)
-f <- d %>%
-  filter(role == "Undergraduate" | role == "Graduate")
 
 a = f%>%
     group_by(Orientation) %>% 
-    summarise_all(mean,na.rm=TRUE)
+    summarise_all(mean, na.rm=TRUE)
   b = a[c(1,4:22)]
-
+  b <- b %>%transpose() %>%
+      row_to_names(row_number(2))
   
+r = f%>%
+    group_by(Orientation) %>%
+    summarise_all(sd,na.rm=TRUE)
+  s = r[,c(1,4:22)]
+
+    s <- s %>%transpose() %>%
+      row_to_names(row_number(2))
+  
+
 q = questionKey$col[c(1:19)]
 p.vals = numeric()
 
@@ -135,10 +154,10 @@ for (i in q){
   p.vals[[i]] = p
 
 }
-queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
-queerp.vals = mutate(queerp.vals, Sig = ifelse(Value < 0.05, Value, "NS"))
+StatSum= tibble(Question = questionKey$Question[c(1:19)],LGBTQAvg = b$LGBT, StraightAvg = b$Straight, LGBTQSTD = s$LGBT, StraightStd = s$Straight,Value = p.vals)
+StatSum = mutate(StatSum, Sig = ifelse(Value < 0.05, Value, "NS"))
 
-queerSig$AllStudents  <- queerp.vals$Sig
+queerSig$AllStudents  <- StatSum$Sig
 ```
 
 
@@ -150,9 +169,18 @@ f <- d %>%
 
 a = f%>%
     group_by(Orientation) %>% 
-    summarise_all(mean,na.rm=TRUE)
+    summarise_all(mean, na.rm=TRUE)
   b = a[c(1,4:22)]
+  b <- b %>%transpose() %>%
+      row_to_names(row_number(2))
+  
+r = f%>%
+    group_by(Orientation) %>%
+    summarise_all(sd,na.rm=TRUE)
+  s = r[,c(1,4:22)]
 
+    s <- s %>%transpose() %>%
+      row_to_names(row_number(2))
   
 q = questionKey$col[c(1:19)]
 p.vals = numeric()
@@ -166,10 +194,10 @@ for (i in q){
   p.vals[[i]] = p
 
 }
-queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
-queerp.vals = mutate(queerp.vals, Sig = ifelse(Value < 0.05, Value, "NS"))
+StatSum= tibble(Question = questionKey$Question[c(1:19)],LGBTQAvg = b$LGBT, StraightAvg = b$Straight, LGBTQSTD = s$LGBT, StraightStd = s$Straight,Value = p.vals)
+StatSum = mutate(StatSum, Sig = ifelse(Value < 0.05, Value, "NS"))
 
-queerSig$UGStudents  <- queerp.vals$Sig
+queerSig$UGStudents  <- StatSum$Sig
 
 
 ```
@@ -184,9 +212,18 @@ f <- d %>%
 
 a = f%>%
     group_by(Orientation) %>% 
-    summarise_all(mean,na.rm=TRUE)
+    summarise_all(mean, na.rm=TRUE)
   b = a[c(1,4:22)]
+  b <- b %>%transpose() %>%
+      row_to_names(row_number(2))
+  
+r = f%>%
+    group_by(Orientation) %>%
+    summarise_all(sd,na.rm=TRUE)
+  s = r[,c(1,4:22)]
 
+    s <- s %>%transpose() %>%
+      row_to_names(row_number(2))
   
 q = questionKey$col[c(1:19)]
 p.vals = numeric()
@@ -200,10 +237,11 @@ for (i in q){
   p.vals[[i]] = p
 
 }
-queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
-queerp.vals = mutate(queerp.vals, Sig = ifelse(Value < 0.05, Value, "NS"))
+StatSum= tibble(Question = questionKey$Question[c(1:19)],LGBTQAvg = b$LGBT, StraightAvg = b$Straight, LGBTQSTD = s$LGBT, StraightStd = s$Straight,Value = p.vals)
+StatSum = mutate(StatSum, Sig = ifelse(Value < 0.05, Value, "NS"))
 
-queerSig$GradStudents  <- queerp.vals$Sig
+queerSig$GradStudents  <- StatSum$Sig
+
 
 
 ```
@@ -215,10 +253,19 @@ f <- d %>%
 
 a = f%>%
     group_by(Orientation) %>% 
-    summarise_all(mean,na.rm=TRUE)
+    summarise_all(mean, na.rm=TRUE)
   b = a[c(1,4:22)]
-
+  b <- b %>%transpose() %>%
+      row_to_names(row_number(2))
   
+r = f%>%
+    group_by(Orientation) %>%
+    summarise_all(sd,na.rm=TRUE)
+  s = r[,c(1,4:22)]
+
+    s <- s %>%transpose() %>%
+      row_to_names(row_number(2))
+
 q = questionKey$col[c(1:19)]
 p.vals = numeric()
 
@@ -231,22 +278,39 @@ for (i in q){
   p.vals[[i]] = p
 
 }
-queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
-queerp.vals = mutate(queerp.vals, Sig = ifelse(Value < 0.05, Value, "NS"))
+StatSum= tibble(Question = questionKey$Question[c(1:19)],LGBTQAvg = b$LGBT, StraightAvg = b$Straight, LGBTQSTD = s$LGBT, StraightStd = s$Straight,Value = p.vals)
+StatSum = mutate(StatSum, Sig = ifelse(Value < 0.05, Value, "NS"))
 
-queerSig$Disabled  <- queerp.vals$Sig
+queerSig$FS  <- StatSum$Sig
 
 ```
+
+
+```{r}
+write.table(queerSig,"clipboard", sep = "\t", row.names = FALSE)
+
+f <- d %>% filter(genderIdentity == "Trans/NB")
+```
+
+T Test of Trans/NB people for all Qs
 
 ```{r}
 options(warn=-1)
 
 a = d%>%
     group_by(genderIdentity) %>% 
-    summarise_all(mean,na.rm=TRUE)
-  b = a[,c(1,4:22)]
+    summarise_all(mean, na.rm=TRUE)
+  b = a[c(1,4:22)]
+  b <- b %>%transpose() %>%
+      row_to_names(row_number(2))
+  
+r = d%>%
+    group_by(genderIdentity) %>%
+    summarise_all(sd,na.rm=TRUE)
+  s = r[,c(1,4:22)]
 
-d %>% group_by(genderIdentity)
+    s <- s %>%transpose() %>%
+      row_to_names(row_number(2))
 
 q = questionKey$col[c(1:19)]
 p.vals = numeric()
@@ -256,18 +320,101 @@ for (i in q){
      next
   }
 t = t.test( d[[i]]~d$genderIdentity)
-print(t$p.value)
+
 p = t$p.value
 p.vals[[i]] = p
 
 
 }
-queerp.vals= tibble(Question = questionKey$Question[c(1:19)], Value = p.vals)
-queerp.vals = mutate(queerp.vals, Sig = ifelse(Value < 0.05, Value, "NS"))
+StatSum= tibble(Question = questionKey$Question[c(1:19)],TransAvg = b$`Trans/NB`, CisAvg = b$Cisgender, TransSTD = s$`Trans/NB`, CisStd = s$Cisgender,Value = p.vals)
+StatSum = mutate(StatSum, Sig = ifelse(Value < 0.05, Value, "NS"))
 
-queerSig$TransNBAll  <- queerp.vals$Sig
+queerSig$TransNB<- StatSum$Sig
 ```
 
+
+Queer People, URM All Questions
+```{r}
+options(warn=-1)
+
+f <- d %>%
+  filter(Orientation == "LGBT")
+
+a = f%>%
+    group_by(UnderRep) %>% 
+    summarise_all(mean, na.rm=TRUE)
+  b = a[c(1,4:22)]
+  b <- b %>%transpose() %>%
+      row_to_names(row_number(2))
+  
+r = f%>%
+    group_by(UnderRep) %>%
+    summarise_all(sd,na.rm=TRUE)
+  s = r[,c(1,4:22)]
+
+    s <- s %>%transpose() %>%
+      row_to_names(row_number(2))
+
+q = questionKey$col[c(1:19)]
+p.vals = numeric()
+for (i in q){
+   if(i == "Q4_6"){
+     p.vals[[i]] = NA
+     next
+  }
+ print (i)
+t = t.test( f[[i]]~f$UnderRep)
+
+p = t$p.value
+p.vals[[i]] = p
+
+
+}
+StatSum= tibble(Question = questionKey$Question[c(1:19)],URMAvg = b$Yes, WhiteAvg = b$No, TransSTD = s$Yes, CisStd = s$No,Value = p.vals)
+StatSum = mutate(StatSum, Sig = ifelse(Value < 0.05, Value, "NS"))
+
+table(f$UnderRep)
+```
+```{r}
+options(warn=-1)
+
+f <- d %>%
+  filter(UnderRep == "Yes")
+
+a = f%>%
+    group_by(Orientation) %>% 
+    summarise_all(mean, na.rm=TRUE)
+  b = a[c(1,4:22)]
+  b <- b %>%transpose() %>%
+      row_to_names(row_number(2))
+  
+r = f%>%
+    group_by(Orientation) %>%
+    summarise_all(sd,na.rm=TRUE)
+  s = r[,c(1,4:22)]
+
+    s <- s %>%transpose() %>%
+      row_to_names(row_number(2))
+  table(f$Orientation)  
+
+q = questionKey$col[c(1:19)]
+p.vals = numeric()
+for (i in q){
+   if(i == "Q4_6"){
+     p.vals[[i]] = NA
+     next
+  }
+ print (i)
+t = t.test( f[[i]]~f$Orientation)
+
+p = t$p.value
+p.vals[[i]] = p
+
+
+}
+StatSum= tibble(Question = questionKey$Question[c(1:19)],LGBTAvg = b$LGBT, StraightAvg = b$Straight, LGBTSTD = s$LGBT, StraightStd = s$Straight,Value = p.vals)
+StatSum = mutate(StatSum, Sig = ifelse(Value < 0.05, Value, "NS"))
+```
 T test, disabled queers
 ```{r}
 options(warn=-1)
@@ -276,11 +423,20 @@ f <- d %>%
   filter(Orientation == "LGBT")
 
 a = f%>%
-    group_by(Disability) %>% 
-    summarise_all(mean,na.rm=TRUE)
-  b = a[,c(1,43:47)]
+    group_by(Orientation) %>% 
+    summarise_all(mean, na.rm=TRUE)
+  b = a[c(1,4:22)]
+  b <- b %>%transpose() %>%
+      row_to_names(row_number(2))
+  
+r = f%>%
+    group_by(Orientation) %>%
+    summarise_all(sd,na.rm=TRUE)
+  s = r[,c(1,4:22)]
 
-table(d$Disability, d$Orientation)
+    s <- s %>%transpose() %>%
+      row_to_names(row_number(2))
+
   
 q = questionKey$col[c(20:24)]
 p.vals = numeric()
@@ -292,11 +448,14 @@ for (i in q){
   p.vals[[i]] = p
 
 }
-queersonly= tibble(Question = questionKey$Question[c(20:24)], Value = p.vals)
-queersonly = mutate(queersonly, Sig = ifelse(Value < 0.05, Value, "NS"))
-queersonlysig = tibble(Question =queersonly$Question, Disabled = queersonly$Sig)
+StatSum= tibble(Question = questionKey$Question[c(20:24)],TransAvg = b$`Trans/NB`, CisAvg = b$Cisgender, TransSTD = s$`Trans/NB`, CisStd = s$Cisgender,Value = p.vals)
+StatSum = mutate(StatSum, Sig = ifelse(Value < 0.05, Value, "NS"))
+queersonlysig = tibble(Question =StatSum$Question, Disabled = StatSum$Sig)
 
 ```
+
+
+
 ```{r}
 options(warn=-1)
    
